@@ -11,7 +11,42 @@
     <properties>
         <java.version>1.9</java.version>
         <vertx.version>3.5.0</vertx.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- dependencies -->
+        <node.version>v9.11.1</node.version>
+        <npm.version>5.8.0</npm.version>
+        <junit.version>4.12</junit.version>
     </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+            <version>${vertx.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+    </dependencies>
+
 
     <build>
         <plugins>
@@ -27,6 +62,17 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <excludes>
+                        <exclude/>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.4.3</version>
                 <executions>
@@ -36,21 +82,24 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                          <transformers>
-                              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                  <manifestEntries>
-                                      <Main-Class>io.vertx.core.Launcher</Main-Class>
-                                      <Main-Verticle>com.sch.schwebapp.MainVerticle</Main-Verticle>
-                                  </manifestEntries>
-                              </transformer>
-                              <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                  <resource>META-INF/services/io.vertx.core.spi.VerticleFactory</resource>
-                              </transformer>
-                          </transformers>
-                          <artifactSet>
-                          </artifactSet>
-                          <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
-                      </configuration>
+                            <transformers>
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>io.vertx.core.Launcher</Main-Class>
+                                        <Main-Verticle>com.sch.schwebapp.MainVerticle</Main-Verticle>
+                                    </manifestEntries>
+                                </transformer>
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/services/io.vertx.core.spi.VerticleFactory</resource>
+                                </transformer>
+                            </transformers>
+                            <artifactSet>
+                            </artifactSet>
+                            <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar
+                            </outputFile>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -71,34 +120,93 @@
         </plugins>
     </build>
 
-    <dependencies>
 
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-unit</artifactId>
-                <version>${vertx.version}</version>
-                <scope>test</scope>
-            </dependency>
+    <profiles>
+        <profile>
+            <id>frontend</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.6</version>
+                        <configuration>
+                            <workingDirectory>${basedir}/src/main/frontend</workingDirectory>
+                            <installDirectory>target</installDirectory>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>${node.version}</nodeVersion>
+                                    <npmVersion>${npm.version}</npmVersion>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>npm install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>npm build</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <srcdir>${basedir}/src/main/frontend</srcdir>
+                                    <arguments>run build</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>webpack build</id>
+                                <goals>
+                                    <goal>webpack</goal>
+                                </goals>
 
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.12</version>
-                <scope>test</scope>
-            </dependency>
+                                <!-- optional: the default phase is "generate-resources" -->
+                                <phase>generate-resources</phase>
 
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-core</artifactId>
-                <version>${vertx.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-web</artifactId>
-                <version>${vertx.version}</version>
-            </dependency>
-
-    </dependencies>
+                                <configuration>
+                                    <!-- optional: if not specified, it will run webpack's default
+                                    build (and you can remove this whole <configuration> section.) -->
+                                    <arguments>-p</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>copy-frontend-dist</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/classes/webroot</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}/src/main/frontend/dist</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

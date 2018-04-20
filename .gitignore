@@ -4,6 +4,7 @@
 
 # Ignore target folder
 target/
+src/main/frontend/node_modules/
 
 ### Vert.x ###
 .vertx/
