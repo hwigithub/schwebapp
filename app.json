@@ -1,5 +1,6 @@
 {
   "name": "schwebapp",
+    "description": "SCH webapp deploy to Heroku.",
   "scripts": {
   },
   "env": {

@@ -3,7 +3,9 @@
 
 
 # Ignore target folder
-target/
+target/*
+!target/schwebapp-1.0.0-SNAPSHOT-fat.jar
+!target/schwebapp-1.0.0-SNAPSHOT.jar
 src/main/frontend/node_modules/
 
 ### Vert.x ###

@@ -2,7 +2,7 @@
 
 SCH Digital Web Application
 
-####Stack:
+#### Stack:
 
 ``` bash
 - Vert.x (Vert.x-Web)
@@ -12,7 +12,7 @@ SCH Digital Web Application
 - Webpack
 ```
 
-####Build Setup
+#### Build Setup
 
 ``` bash
 # install dependencies
