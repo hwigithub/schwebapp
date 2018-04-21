@@ -9,24 +9,29 @@ import Footer from "./components/Footer.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
-Vue.use(BootstrapVue);
+window.onload = function () {
+    console.log("Start ...");
 
-new Vue({
-  el: "#app",
-  render: h => h(App)
-});
+    Vue.use(BootstrapVue);
 
-new Vue({
-  el: "#app-navbar",
-  render: h => h(Navbar)
-});
+    new Vue({
+        el: "#app",
+        render: h => h(App)
+    });
 
-new Vue({
-  el: "#app-main",
-  render: h => h(Main)
-});
+    new Vue({
+        el: "#app-navbar",
+        render: h => h(Navbar)
+    });
 
-new Vue({
-  el: "#app-footer",
-  render: h => h(Footer)
-});
+    new Vue({
+        el: "#app-main",
+        render: h => h(Main)
+    });
+
+    new Vue({
+        el: "#app-footer",
+        render: h => h(Footer)
+    });
+}
+
