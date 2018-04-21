@@ -23,7 +23,7 @@ Maven:
 3) frontend:webpack
 
 
-# serve with hot reload at localhost:8080
+# serve at localhost:8080
 
 1) clean package -Dmaven.test.skip=true (without running Tests :D)
 or clean package
