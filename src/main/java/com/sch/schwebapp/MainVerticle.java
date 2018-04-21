@@ -8,14 +8,15 @@ public class MainVerticle extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
-        //int port = Integer.parseInt(System.getenv("PORT"));
+
+        int port =  (System.getenv("PORT").isEmpty()) ? 8080 : Integer.parseInt(System.getenv("PORT"));
 
 
         Router router = Router.router(vertx);
         router.route("/*").handler(StaticHandler.create().setCachingEnabled(false));
         router.route("/dist/*").handler(StaticHandler.create().setCachingEnabled(false));
 
-        vertx.createHttpServer().requestHandler(router::accept);//.listen(8080);
+        vertx.createHttpServer().requestHandler(router::accept).listen(port);
 
         System.out.println("HTTP server started on port 8080");
     }
