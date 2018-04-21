@@ -2,7 +2,7 @@
 
 SCH Digital Web Application
 
-#####Stack:
+####Stack:
 
 ``` bash
 - Vert.x (Vert.x-Web)
@@ -12,7 +12,7 @@ SCH Digital Web Application
 - Webpack
 ```
 
-#####Build Setup
+####Build Setup
 
 ``` bash
 # install dependencies
@@ -24,10 +24,9 @@ Maven:
 
 
 # serve with hot reload at localhost:8080
-Maven
 
 1) clean package -Dmaven.test.skip=true (without running Tests :D)
 or clean package
 
-2) stefanciprian$ java -jar target/schwebapp-1.0.0-SNAPSHOT-fat.jar
+2) java -jar target/schwebapp-1.0.0-SNAPSHOT-fat.jar
 ```
