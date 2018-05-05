@@ -2,6 +2,11 @@
 
 SCH Digital Web Application
 
+Heroku pipeline:
+
+* Staging: https://schdigital-staging.herokuapp.com/
+* Production: https://schdigital-production.herokuapp.com/
+
 ## Stack:
 
 ``` bash
